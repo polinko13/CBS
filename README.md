@@ -38,7 +38,7 @@ Yakovlev Konstantin Sergeevich
 
 ## Contacts
 
-Kazovskaya Anastasiya
+Kazovskaya Anastasia
 
 - Telegram: @Chickypicky
 
@@ -48,4 +48,4 @@ Klimenko Polina
 
 Shulzhenko Alexander
 
--Telegram: @amoskowski
+- Telegram: @amoskowski
