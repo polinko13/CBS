@@ -19,7 +19,7 @@ git submodule init
 git submodule update
 ```
 
-## Using
+## Usage
 
 Run all cells in ```CBS.ipynb```. You may change test parameters in the last cell:
 1) maximum number of agents (default=15)
