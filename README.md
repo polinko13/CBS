@@ -3,6 +3,10 @@
 
 ![alt text](images/Pic1.png)
 
+## Description
+
+A software project at the Saint-Petersburg University. 
+
 ## Installing
 
 Download current repository to your local machine. Use
@@ -18,6 +22,11 @@ cd CBS
 git submodule init
 git submodule update
 ```
+## Input and output
+
+### Input file
+......
+
 
 ## Usage
 
