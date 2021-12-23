@@ -26,6 +26,7 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 2) minimum number of agents (default=3)
 3) number of agents increase step (default=2)
 4) MA-CBS merge border (default=3)
+5) list of performed tests
 
 ## Sources
 - Guni Sharon, Roni Stern, Ariel Felner, Nathan R. Sturtevant; Conflict-based search for optimal multi-agent pathfinding. [**URL**](https://www.bgu.ac.il/~felner/2015/CBSjur.pdf)
