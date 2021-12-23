@@ -22,10 +22,7 @@ cd CBS
 git submodule init
 git submodule update
 ```
-## Input and output
 
-### Input file
-......
 
 
 ## Usage
