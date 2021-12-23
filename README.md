@@ -21,7 +21,7 @@ git submodule update
 
 ## Using
 
-Run all cells in ```CBS-MAIN.ipynb```. You may change test parameters:
+Run all cells in ```CBS-MAIN.ipynb```. You may change test parameters in the last cell:
 1) maximum number of agents (default=15)
 2) minimum number of agents (default=3)
 3) number of agents increase step (default=2)
