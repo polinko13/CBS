@@ -42,6 +42,7 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 - Eli Boyarski, Ariel Felner, Guni Sharon, Roni Stern; Don't Split, Try To Work It Out: Bypassing Conflicts in Multi-Agent Pathfinding; Proceedings of the Twenty-Fifth International Conference on Automated Planning and Scheduling, [**URL**](https://ojs.aaai.org/index.php/ICAPS/article/view/13725)
 - Raz Nissim, Ronen Brafman; Multi-Agent A* for Parallel and Distributed Systems; [**URL**](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.365.7765&rep=rep1&type=pdf)
 - Jiaoyang Li, Ariel Felner, Eli Boyarski, Hang Ma, Sven Koenig; Improved Heuristics for Multi-Agent Path Finding with Conflict-Based Search; [**URL**](https://www2.cs.sfu.ca/~hangma/pub/ijcai19.pdf)
+- Jiaoyang Li, Daniel HaraborPeter, J. Stuckey, Ariel Felner, Hang Ma, Sven Koenig; Proceedings of the Twenty-Ninth International Conference on Automated Planning and Scheduling (ICAPS 2019); [**URL**](https://ojs.aaai.org/index.php/ICAPS/article/view/3487/3355)
 
 ## Mentors
 
