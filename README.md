@@ -28,9 +28,9 @@ git submodule update
 ## Usage
 
 Run all cells in ```CBS.ipynb```. You may change test parameters in the last cell:
-1) maximum number of agents (default=15)
-2) minimum number of agents (default=3)
-3) number of agents increase step (default=2)
+1) maximum number of agents (default=8)
+2) minimum number of agents (default=2)
+3) number of agents increase step (default=3)
 4) MA-CBS merge border (default=3)
 5) list of performed tests
 
