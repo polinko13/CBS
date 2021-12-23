@@ -1,5 +1,5 @@
 # CBS Basics and enhancements
-## Алгоритмы конфликтно-ориентированного поиска для задачи много-агентного планирования.
+## Conflict-Based Search Algorithms for Multi-Agent Pathfinding problem
 
 ![alt text](images/Pic1.png)
 
