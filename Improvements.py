@@ -4,10 +4,19 @@ import matplotlib.pyplot as plt
 import random
 from heapq import heappop, heappush
 
-def hello():
-    print("Hello, world!")
-    
-def CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # subset, vertex/edge- Cons - нужны только при вызове CBS в качестве нижнего уровня MACBS
+from MAPF import Map
+from MAPF import read_map_from_movingai_file, read_tasks_from_movingai_file
+
+from CT import HighNode, LowNode
+
+from OpenClosed import OpenHigh, OpenLow, ClosedLow
+
+from Heuristics import ManhattanDistance
+
+from CT import MakePath
+from AstarTimeSteps import AstarTimesteps
+
+def BP_CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # subset, vertex/edge- Cons - нужны только при вызове CBS в качестве нижнего уровня MACBS
     tic = time.perf_counter() # начало работы функции
     
     gen = 0
@@ -57,7 +66,7 @@ def CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # subset
     
     toc = time.perf_counter()
     
-    while toc - tic < 60:
+    while toc - tic < 120:
         s = OPEN.GetBestNode()
         exp += 1
         
@@ -87,125 +96,179 @@ def CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # subset
         if len(newVertexCons) > 0:
             a, b, (i, j), t = newVertexCons[0]
             
+            FlagChildA = False
+            FlagChildB = False
+            
             # Разбиваем CT на ноды A и B, разрешая вершинный конфликт 
             
-            tmp = s.vertexCons.copy()
-            if a in tmp:
-                tmp[a].append(((i, j), t))   
-            else:
-                tmp[a] = [((i, j), t)]
+            vertexCons_tmp_A = s.vertexCons.copy()
+            edgeCons_tmp_A=s.edgeCons.copy()
+            sol_tmp_A=s.sol.copy()
             
-            A = HighNode(
-                vertexCons=tmp,
-                edgeCons=s.edgeCons.copy(),
-                sol=s.sol.copy(),
-                parent=s,
-                k=gen,
-            )
+            if a in vertexCons_tmp_A:
+                vertexCons_tmp_A[a].append(((i, j), t))   
+            else:
+                vertexCons_tmp_A[a] = [((i, j), t)]
+            
+            #A = HighNode(vertexCons=tmp, edgeCons=s.edgeCons.copy(), sol=s.sol.copy(), parent=s, k=gen)
+            
             
             ec = []
-            if a in A.edgeCons:
-                ec = A.edgeCons[a]
+            if a in edgeCons_tmp_A:
+                ec = edgeCons_tmp_A[a]
             
-            planner = AstarTimesteps(gridMap, Starts[a][0], Starts[a][1], Goals[a][0], Goals[a][1], A.vertexCons[a], ec)
+            planner = AstarTimesteps(gridMap, Starts[a][0], Starts[a][1], Goals[a][0], Goals[a][1], vertexCons_tmp_A[a], ec)
             res = planner.FindPath()
             if res[0]:
                 path = MakePath(res[1])
-                A.sol[a], _ = path
-                A.g = sum([len(path) for path in A.sol.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                sol_tmp_A[a], _ = path
+                g = sum([len(path) for path in sol_tmp_A.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                if  g == s.g:
+                    FlagChildA = True 
+                
+                
+            vertexCons_tmp_B = s.vertexCons.copy()
+            edgeCons_tmp_B=s.edgeCons.copy()
+            sol_tmp_B=s.sol.copy()
+            
+            if b in vertexCons_tmp_B:
+                vertexCons_tmp_B[b].append(((i, j), t))   
+            else:
+                vertexCons_tmp_B[b] = [((i, j), t)]
+                            
+            ec = []
+            if b in edgeCons_tmp_B:
+                ec = edgeCons_tmp_B[b]
+            
+            planner = AstarTimesteps(gridMap, Starts[b][0], Starts[b][1], Goals[b][0], Goals[b][1], vertexCons_tmp_B[b], ec)
+            res = planner.FindPath()
+            if res[0]:
+                path = MakePath(res[1])
+                sol_tmp_B[b], _ = path
+                g = sum([len(path) for path in sol_tmp_B.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                if g == s.g:
+                    FlagChildB = True 
+                
+            if FlagChildA:
+                s.vertexCons=vertexCons_tmp_A
+                s.edgeCons=edgeCons_tmp_A
+                s.sol=sol_tmp_A
+            elif FlagChildB:
+                s.vertexCons=tmp_B
+                s.edgeCons=edgeCons_tmp_B
+                s.sol=sol_tmp_B
+            else:
+                A = HighNode(
+                    vertexCons=vertexCons_tmp_A,
+                    edgeCons=edgeCons_tmp_A,
+                    sol=sol_tmp_A,
+                    parent=s,
+                    k=gen,
+                )
+                gen+=1
+                B = HighNode(
+                    vertexCons=vertexCons_tmp_B,
+                    edgeCons=edgeCons_tmp_B,
+                    sol=sol_tmp_B,
+                    parent=s,
+                    k=gen,
+                )
+                gen+=1
                 OPEN.AddNode(A)
-                gen += 1
-                
-            tmp = s.vertexCons.copy()
-            if b in tmp:
-                tmp[b].append(((i, j), t))   
-            else:
-                tmp[b] = [((i, j), t)]
-                
-            B = HighNode(
-                vertexCons=tmp,
-                edgeCons=s.edgeCons.copy(),
-                sol=s.sol.copy(),
-                parent=s,
-                k=gen,
-            )
-            
-            ec = []
-            if b in B.edgeCons:
-                ec = B.edgeCons[b]
-            
-            planner = AstarTimesteps(gridMap, Starts[b][0], Starts[b][1], Goals[b][0], Goals[b][1], B.vertexCons[b], ec)
-            res = planner.FindPath()
-            if res[0]:
-                path = MakePath(res[1])
-                B.sol[b], _ = path
-                B.g = sum([len(path) for path in B.sol.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
                 OPEN.AddNode(B)
-                gen += 1
+                
+                      
+
                 
         elif len(newEdgeCons) > 0:
             a, b, (i1, j1), (i2, j2), t = newEdgeCons[0]
             
+            FlagChildA = False
+            FlagChildB = False
+            
             # Разбиваем CT на ноды A и B, разрешая реберный конфликт 
             
-            tmp = s.edgeCons.copy()
-            if a in tmp:
-                tmp[a].append(((i1, j1), (i2, j2), t))   
-            else:
-                tmp[a] = [((i1, j1), (i2, j2), t)]
             
-            A = HighNode(
-                vertexCons=s.vertexCons.copy(),
-                edgeCons=tmp,
-                sol=s.sol.copy(),
-                parent=s,
-                k=gen,
-            )
+            vertexCons_tmp_A = s.vertexCons.copy()
+            edgeCons_tmp_A=s.edgeCons.copy()
+            sol_tmp_A=s.sol.copy()
+            
+            if a in edgeCons_tmp_A:
+                edgeCons_tmp_A[a].append(((i1, j1), (i2, j2), t))   
+            else:
+                edgeCons_tmp_A[a] = [((i1, j1), (i2, j2), t)]
+            
             
             vc = []
-            if a in A.vertexCons:
-                vc = A.vertexCons[a]
+            if a in vertexCons_tmp_A:
+                vc = vertexCons_tmp_A[a]
             
-            planner = AstarTimesteps(gridMap, Starts[a][0], Starts[a][1], Goals[a][0], Goals[a][1], vc, A.edgeCons[a])
+            planner = AstarTimesteps(gridMap, Starts[a][0], Starts[a][1], Goals[a][0], Goals[a][1], vc, vertexCons_tmp_A[a])
             res = planner.FindPath()
             if res[0]:
                 path = MakePath(res[1])
-                A.sol[a], _ = path
-                A.g = sum([len(path) for path in A.sol.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
-                OPEN.AddNode(A)
-                gen += 1
+                sol_tmp_A[a], _ = path
+                g = sum([len(path) for path in sol_tmp_A.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                if  g == s.g:
+                    FlagChildA = True 
                 
-            tmp = s.edgeCons.copy()
-            if b in tmp:
-                tmp[b].append(((i1, j1), (i2, j2), t))   
-            else:
-                tmp[b] = [((i1, j1), (i2, j2), t)]
+                
+            vertexCons_tmp_B = s.vertexCons.copy()
+            edgeCons_tmp_B=s.edgeCons.copy()
+            sol_tmp_B=s.sol.copy()
             
-            B = HighNode(
-                vertexCons=s.vertexCons.copy(),
-                edgeCons=tmp,
-                sol=s.sol.copy(),
-                parent=s,
-                k=gen,
-            )
+            if b in edgeCons_tmp_B:
+                edgeCons_tmp_B[b].append(((i1, j1), (i2, j2), t))   
+            else:
+                edgeCons_tmp_B[b] = [((i1, j1), (i2, j2), t)]
             
             vc = []
-            if b in B.vertexCons:
-                vc = B.vertexCons[b]
+            if b in vertexCons_tmp_B:
+                vc = vertexCons_tmp_B[b]
             
-            planner = AstarTimesteps(gridMap, Starts[b][0], Starts[b][1], Goals[b][0], Goals[b][1], vc, B.edgeCons[b])
+            planner = AstarTimesteps(gridMap, Starts[b][0], Starts[b][1], Goals[b][0], Goals[b][1], vc, edgeCons_tmp_B[b])
             res = planner.FindPath()
             if res[0]:
                 path = MakePath(res[1])
-                B.sol[b], _ = path
-                B.g = sum([len(path) for path in B.sol.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                sol_tmp_B[b], _ = path
+                g = sum([len(path) for path in sol_tmp_B.values()]) # SIC, можно использовать другой cost; добавить подсчет h, F
+                if  g == s.g:
+                    FlagChildB = True 
+                    
+            if FlagChildA:
+                s.vertexCons=vertexCons_tmp_A
+                s.edgeCons=edgeCons_tmp_A
+                s.sol=sol_tmp_A
+            elif FlagChildB:
+                s.vertexCons=tmp_B
+                s.edgeCons=edgeCons_tmp_B
+                s.sol=sol_tmp_B
+            else:
+                A = HighNode(
+                    vertexCons=vertexCons_tmp_A,
+                    edgeCons=edgeCons_tmp_A,
+                    sol=sol_tmp_A,
+                    parent=s,
+                    k=gen,
+                )
+                gen+=1
+                B = HighNode(
+                    vertexCons=vertexCons_tmp_B,
+                    edgeCons=edgeCons_tmp_B,
+                    sol=sol_tmp_B,
+                    parent=s,
+                    k=gen,
+                )
+                gen+=1
+                OPEN.AddNode(A)
                 OPEN.AddNode(B)
-                gen += 1
                 
         toc = time.perf_counter()
     
     return (False, None, gen, exp)
- 
+
+
+
 def PC_CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # subset, vertex/edge- Cons - нужны только при вызове CBS в качестве нижнего уровня MACBS
     tic = time.perf_counter() # начало работы функции
     
@@ -256,7 +319,7 @@ def PC_CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # sub
     
     toc = time.perf_counter()
     
-    while toc - tic < 60:
+    while toc - tic < 120:
         s = OPEN.GetBestNode()
         exp += 1
         
@@ -442,13 +505,3 @@ def PC_CBS(gridMap, Starts, Goals, subset=[], vertexCons=[], edgeCons=[]): # sub
             toc = time.perf_counter()
     
     return (False, None, gen, exp)
-
-
-                        
-        
-        
-        
-                
-                
-                
-                
