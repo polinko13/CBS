@@ -46,6 +46,10 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 
 ![alt text](images/Pic2.png)
 
+![alt text](images/img2_0_0.png)
+
+![alt text](images/img8_2_1.png)
+
 ## Sources
 - Guni Sharon, Roni Stern, Ariel Felner, Nathan R. Sturtevant; Conflict-based search for optimal multi-agent pathfinding. [**URL**](https://www.bgu.ac.il/~felner/2015/CBSjur.pdf)
 
