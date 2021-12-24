@@ -16,6 +16,8 @@ from Heuristics import ManhattanDistance
 from CT import MakePath
 from AstarTimeSteps import AstarTimesteps
 
+from cbs import CBS
+
 
 class MetaAgent:
     '''
@@ -88,7 +90,7 @@ def Merge(a : MetaAgent, b : MetaAgent, node : HighNode):
             for vc in node.vertexCons[ma]:
                 if vc[-1] != a and vc[-1] != b:
                     # vertex constraint теперь выглядит так: (subset, v, t, meta-agent)
-                    new_vc = (ma.agents, vc[2], vc[3], vc[4])
+                    new_vc = (ma.agents, vc[2], vc[3])
                     newVC.append(new_vc)
             newVertexCons[ma] = newVC
         else:
@@ -106,6 +108,9 @@ def Merge(a : MetaAgent, b : MetaAgent, node : HighNode):
             newEdgeCons[ma] = newEC
         else:
             newEdgeCons[ma] = node.edgeCons[ma]
+            
+    
+    return newMetaAgent, newVertexCons, newEdgeCons
             
     
     return newMetaAgent, newVertexCons, newEdgeCons
