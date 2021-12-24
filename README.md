@@ -7,6 +7,7 @@
 
 A software project at the Saint-Petersburg University. 
 
+
 ## Installing
 
 Download current repository to your local machine. Use
@@ -22,7 +23,14 @@ cd CBS
 git submodule init
 git submodule update
 ```
+## Files
 
+- `MAPF.py` - file contains class `Map`, that represents the environment for agents; `read_map_from_movingai_file function`, that draw map from file; `read_tasks_from_movingai_file` function that read a scenarium
+- `CT.py` - file describes Nodes of Tree
+- `cbs.py` - cbs algorithm
+- `Improvements.py` - bypassing cbs, prioritising conflicts algorithm
+- `ma-cbs.py` - meta-agent cbs algorithm
+- `CBS_test` - performing tests for all the algorithms above
 
 
 ## Usage
@@ -33,6 +41,10 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 3) number of agents increase step (default=3)
 4) MA-CBS merge border (default=3)
 5) list of performed tests
+
+## Output images
+
+![alt text](images/Pic2.png)
 
 ## Sources
 - Guni Sharon, Roni Stern, Ariel Felner, Nathan R. Sturtevant; Conflict-based search for optimal multi-agent pathfinding. [**URL**](https://www.bgu.ac.il/~felner/2015/CBSjur.pdf)
