@@ -10,7 +10,14 @@ A software project at the Saint-Petersburg University.
 Multi-Agent Path Finding (MAPF) is a problem of finding a set of paths consisting of motion trajectories for each of the agents, without collisions, where the start and final positions are known for each agent. Practical systems must quickly find conflict-free paths for such agents.
 
 Conflict-Based Search Algorithm (CBS) is a classical method of solving the MAPF problem. It is a two-level algorithm: at the high level, a search is performed on a Conflict
-Tree (CT) which is a tree based on conflicts between individual agents. Each node in the CT represents a set of constraints on the motion of the agents. At the low level, fast singleagent searches are performed to satisfy the constraints imposed by the high level CT node
+Tree (CT) which is a tree based on conflicts between individual agents. Each node in the CT represents a set of constraints on the motion of the agents. At the low level, fast singleagent searches are performed to satisfy the constraints imposed by the high level CT node.
+
+There are some improvements of CBS:
+- `CBS + Disjoint Splitting`: the main idea of this method is that when splitting a node in a CT, the sets of trajectories available to agents in the right and left subtrees can overlap strongly, therefore, in order to avoid repeated calculations, so-called positive constraints are introduced, which oblige the agent to be in a given node or walk along the given edge at the specified time.
+- `CBS + High Level Heuristics`: 
+- `CBS + Bypassing`:
+- `CBS + Prioritising Conflicts`:
+- `CBS + MetaAgents`:
  
 
 
