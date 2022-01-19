@@ -14,10 +14,10 @@ Tree (CT) which is a tree based on conflicts between individual agents. Each nod
 
 There are some improvements of CBS:
 - `CBS + Disjoint Splitting`: the main idea of this method is that when splitting a node in a CT, the sets of trajectories available to agents in the right and left subtrees can overlap strongly, therefore, in order to avoid repeated calculations, so-called positive constraints are introduced, which oblige the agent to be in a given node or walk along the given edge at the specified time.
-- `CBS + High Level Heuristics`: 
-- `CBS + Bypassing`:
-- `CBS + Prioritising Conflicts`:
-- `CBS + MetaAgents`:
+- `CBS + High Level Heuristics`: in this version of the algorithm improvement, heuristics are considered at the upper level CT
+- `CBS + Bypassing Conflicts`: when a conflict is found, we first attempt to bypass the conflict and avoid the need to perform a split and add new constraints. If no bypass is found we resort to the drastic split action of adding explicit constraints to avoid the conflict.
+- `CBS + Prioritising Conflicts`: we distinguish between three types of conflicts and show that prioritizing them may immediately increase the solution cost in the sub-tree below the current node thereby significantly reducing the size of the CT
+- `CBS + MetaAgents`:  the improvements are based on merging agents into a meta-agent
  
 
 
