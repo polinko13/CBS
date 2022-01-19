@@ -55,6 +55,16 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 4) MA-CBS merge border (default=3)
 5) list of performed tests
 
+## Input data
+
+To test the algorithms,  we used [open test library](movingai.com) (specifically, its section is devoted to testing algorithms for MAPF).
+
+We chose 5 different types of cards:
+- `Empty`
+- `Random inspections`
+- `Labyrinth`
+- `Room`
+
 ## Output images
 
 ![alt text](images/Pic2.png)
