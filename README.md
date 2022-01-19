@@ -57,7 +57,7 @@ Run all cells in ```CBS.ipynb```. You may change test parameters in the last cel
 
 ## Input data
 
-To test the algorithms,  we used [open test library](movingai.com) (specifically, its section is devoted to testing algorithms for MAPF).
+To test the algorithms,  we used [open test library](https://movingai.com/) (specifically, its section is devoted to testing algorithms for MAPF).
 
 We chose 5 different types of cards:
 - `Empty`
