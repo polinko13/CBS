@@ -26,7 +26,7 @@ There are some improvements of CBS:
 Download current repository to your local machine. Use
 
 ```bash
-git clone https://github.com/PolinaKlimenko/CBS.git
+git clone https://github.com/polinko13/CBS.git
 ```
 
 The project requires submodules, to install them use
